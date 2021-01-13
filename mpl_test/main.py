@@ -3,7 +3,7 @@
 # --------------------------------------------- ---------
 from PyQt5.QtWidgets import *
 from PyQt5.uic import loadUi
-
+from PyQt5 import QtGui
 from matplotlib.backends.backend_qt5agg import (NavigationToolbar2QT as NavigationToolbar)
 import numpy as np
 import random
@@ -13,14 +13,25 @@ class MatplotlibWidget(QMainWindow):
 
     def __init__(self):
         QMainWindow.__init__(self)
-
         loadUi("qt_designer.ui", self)
-
         self.setWindowTitle("PyQt5 & Matplotlib Example GUI")
+        # self.pushButton_inputData.clicked.connect(self.onInputFileButtonClicked)
+        # self.pushButton_inputData_2.clicked.connect(self.onInputFileButtonClicked)
+        self.pushButton_inputData.clicked.connect(
+            lambda le = self.lineEdit: self.onInputFileButtonClicked(self.lineEdit))
 
-        self.pushButton_generate_random_signal.clicked.connect(self.update_graph)
+        self.pushButton_inputData_2.clicked.connect(
+            lambda le = self.lineEdit_2: self.onInputFileButtonClicked(self.lineEdit_2))
 
+        self.plotButton.clicked.connect(self.update_graph)
         self.addToolBar(NavigationToolbar(self.MplWidget.canvas, self))
+        self.fileList = []
+
+    def onInputFileButtonClicked(self, lineedit):
+        filename, filter = QFileDialog.getOpenFileName(None, caption='Open file')
+        if filename:
+            lineedit.setText(filename)
+        self.fileList.append(filename)
 
     def update_graph(self):
         fs = 500
@@ -39,8 +50,8 @@ class MatplotlibWidget(QMainWindow):
         self.MplWidget.canvas.axes.set_title(' Cosinus - Sinus Signal')
         self.MplWidget.canvas.draw()
 
-
-app = QApplication([])
-window = MatplotlibWidget()
-window.show()
-app.exec_()
+if __name__ == '__main__':
+    app = QApplication([])
+    window = MatplotlibWidget()
+    window.show()
+    app.exec_()
