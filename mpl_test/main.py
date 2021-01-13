@@ -1,13 +1,12 @@
-# ------------------------------------------------- -----
-# ---------------------- main.py ------------------- ----
-# --------------------------------------------- ---------
+#!/usr/bin/env python3
+
 from PyQt5.QtWidgets import *
 from PyQt5.uic import loadUi
 from PyQt5 import QtGui
 from matplotlib.backends.backend_qt5agg import (NavigationToolbar2QT as NavigationToolbar)
 import numpy as np
 import random
-
+from Graph import Mathpro, Graph
 
 class MatplotlibWidget(QMainWindow):
 
@@ -34,21 +33,17 @@ class MatplotlibWidget(QMainWindow):
         self.fileList.append(filename)
 
     def update_graph(self):
-        fs = 500
-        f = random.randint(1, 100)
-        ts = 1 / fs
-        length_of_signal = 100
-        t = np.linspace(0, 1, length_of_signal)
+        try:
+            filepath = self.lineEdit.text()
 
-        cosinus_signal = np.cos(2 * np.pi * f * t)
-        sinus_signal = np.sin(2 * np.pi * f * t)
+            f, t, Sxx = Mathpro.getSpectro(filepath)
 
-        self.MplWidget.canvas.axes.clear()
-        self.MplWidget.canvas.axes.plot(t, cosinus_signal)
-        self.MplWidget.canvas.axes.plot(t, sinus_signal)
-        self.MplWidget.canvas.axes.legend(('cosinus', 'sinus'), loc='upper right')
-        self.MplWidget.canvas.axes.set_title(' Cosinus - Sinus Signal')
-        self.MplWidget.canvas.draw()
+            self.MplWidget.canvas.axes.clear()
+            self.MplWidget.canvas.axes.pcolormesh(t, f, Sxx)
+            self.MplWidget.canvas.axes.set_title('Spectrogram')
+            self.MplWidget.canvas.draw()
+        except:
+            print('Something went wrong!  Please check the file data format.')
 
 if __name__ == '__main__':
     app = QApplication([])

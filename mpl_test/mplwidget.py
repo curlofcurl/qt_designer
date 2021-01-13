@@ -1,4 +1,4 @@
-
+#!/usr/bin/env python3
 
 from PyQt5.QtWidgets import *
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
