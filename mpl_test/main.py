@@ -12,7 +12,7 @@ class MatplotlibWidget(QMainWindow):
 
     def __init__(self):
         QMainWindow.__init__(self)
-        loadUi("qt_designer.ui", self)
+        loadUi("/home/demo/Alex/qt_designer/mpl_test/qt_designer.ui", self)
         self.setWindowTitle("PyQt5 & Matplotlib Example GUI")
         # self.pushButton_inputData.clicked.connect(self.onInputFileButtonClicked)
         # self.pushButton_inputData_2.clicked.connect(self.onInputFileButtonClicked)
@@ -35,14 +35,16 @@ class MatplotlibWidget(QMainWindow):
     def update_graph(self):
         try:
             filepath = self.lineEdit.text()
-
-            f, t, Sxx = Mathpro.getSpectro(filepath)
+            print('filepath ' + filepath)
+            mp = Mathpro()
+            f, t, Sxx = mp.getSpectro(filepath)
 
             self.MplWidget.canvas.axes.clear()
             self.MplWidget.canvas.axes.pcolormesh(t, f, Sxx)
             self.MplWidget.canvas.axes.set_title('Spectrogram')
             self.MplWidget.canvas.draw()
-        except:
+        except Exception as e:
+            print(e)
             print('Something went wrong!  Please check the file data format.')
 
 if __name__ == '__main__':
