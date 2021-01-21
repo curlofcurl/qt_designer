@@ -1,0 +1,7 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+    <qresource prefix="icons">
+        <file alias="innovusion.jpg">innovusion.jpg</file>
+	<file alias="sfsky.jpg">sfsky.jpg</file>
+    </qresource>
+</RCC>
